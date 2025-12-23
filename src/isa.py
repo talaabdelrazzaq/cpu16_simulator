@@ -33,3 +33,7 @@ REGISTERS={
     "T6":0b110,
     "T7":0b111,
 }
+
+R_FORMAT = {"ADD","SUB","MUL","MOD","AND","OR","XOR","LSL","LSR","CHECK"}
+I_FORMAT = {"ADDI","SUBI","SETI"}
+D_FORMAT = {"LOAD","STORE","BRANCH"}
