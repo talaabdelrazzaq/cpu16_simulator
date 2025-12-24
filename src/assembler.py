@@ -34,7 +34,7 @@ def encode_d(tokens: list[str]) -> int:
     opcode = OPCODES[tokens[0]]
     rt = REGISTERS[tokens[1]]
     rn = REGISTERS[tokens[2]]
-    address = int(tokens[3])
+    address = int(tokens[3], 0)
     address &= 0b111111 # mask address to 6 bits
     # D-format: opcode[15-12] rt[11-9] rn[8-6] immediate[5-0]
     code = (opcode<<12|rt<<9|rn<<6|address)
@@ -53,5 +53,20 @@ def choose_encode(line: str):
     elif op in D_FORMAT: return encode_d(tokens)
     else: raise ValueError(f"Unknown opcode: {op}")
 
+def list_machine_instructions(path: str) -> list[int]:
+    instruction_list = []
+    with open(path, "r") as file:
+        lines_list = file.readlines()
+    for line in lines_list:
+        code = choose_encode(line)
+        if code is None: continue
+        else: instruction_list.append(code)
+    return instruction_list
+            
+def main():
+    codes = list_machine_instructions("program.asm")
+    with open("program.hex", "w") as f:
+        for code in codes:
+            f.write(f"{code:04X}\n")
 
-
+if __name__ == "__main__": main()
